@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Seyam Store</title>
+  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+<!-- ✅ NAVIGATION -->
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">
+    <img src="/media/logo2-removebg-preview.png" alt="Seyam Store Logo">
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="products.html">Products</a></li>
+    <li>
+      <a href="cart.html" class="cart-link">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count" id="cart-count">0</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<!-- ✅ IMAGE SLIDER -->
+<section class="slider">
+  <div class="slides">
+    <img class="slide active" src="/media/img_6.png" alt="Promo 1">
+    <img class="slide" src="/media/img_7.png" alt="Promo 2">
+    <img class="slide" src="/media/img_8.png" alt="Promo 3">
+  </div>
+
+  <!-- Overlay Content -->
+  <div class="slider-content">
+    <h1>Welcome to Seyam Store</h1>
+    <p>Gear up with premium Shopping</p>
+    <div class="slider-buttons">
+      <a href="products.html" class="slider-btn">Shop Now</a>
+      <a href="about.html" class="slider-btn secondary">Explore</a>
+    </div>
+  </div>
+
+  <!-- Manual Controls -->
+  <button class="slider-btn-prev">&#10094;</button>
+  <button class="slider-btn-next">&#10095;</button>
+</section>
+
+<!-- ✅ SEARCH + FILTER -->
+<section class="search-filter">
+  <input type="text" id="search-input" placeholder="Search products..." />
+  <select id="category-select">
+    <option value="">All Categories</option>
+    <!-- Options will be filled by JS -->
+  </select>
+</section>
+
+<!-- ✅ PRODUCTS PREVIEW -->
+<section id="products-container" class="product-grid">
+  <!-- Products will be injected here -->
+</section>
+
+<!-- ✅ NEWSLETTER -->
+<section class="newsletter">
+  <h2>Subscribe to our newsletter</h2>
+  <form>
+    <input type="email" placeholder="Enter your email" required />
+    <button type="submit">Subscribe</button>
+  </form>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-container">
+    <div class="footer-section">
+      <h3>Seyam Store</h3>
+      <p>Premium sportswear for every athlete.</p>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+      </div>
+    </div>
+    <div class="footer-section">
+      <h3>Shop</h3>
+      <ul class="footer-links">
+        <li><a href="men.html">Men's Collection</a></li>
+        <li><a href="women.html">Women's Collection</a></li>
+        <li><a href="new-arrivals.html">New Arrivals</a></li>
+        <li><a href="sale.html">Sale Items</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h3>Customer Service</h3>
+      <ul class="footer-links">
+        <li><a href="contact.html">Contact Us</a></li>
+        <li><a href="size-guide.html">Size Guide</a></li>
+        <li><a href="shipping.html">Shipping Info</a></li>
+        <li><a href="returns.html">Returns & Exchanges</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h3>About Us</h3>
+      <ul class="footer-links">
+        <li><a href="about.html">Our Story</a></li>
+        <li><a href="sustainability.html">Sustainability</a></li>
+        <li><a href="athletes.html">Athletes</a></li>
+        <li><a href="blog.html">Blog</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 Seyam Store. All rights reserved.</p>
+  </div>
+</footer>
+<a href="#" id="scrollTopBtn" title="Go to top">
+  <i class="fas fa-arrow-up"></i>
+</a>
+<script src="js/main.js"></script>
+</body>
+</html>

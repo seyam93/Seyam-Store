@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Products | Seyam Store</title>
+  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="styles/products.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+<!-- ✅ Navbar -->
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">
+    <img src="media/logo2-removebg-preview.png" alt="Seyam Store Logo">
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="products.html">Products</a></li>
+    <li>
+      <a href="cart.html" class="cart-link">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count" id="cart-count">0</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+<h1 class="product-title">All Products</h1>
+<!-- ✅ Search & Filter -->
+<section class="search-filter">
+  <input type="text" id="search-input" placeholder="Search products...">
+  <select id="category-select">
+    <option value="">All Categories</option>
+  </select>
+</section>
+
+<!-- ✅ Product Grid -->
+<section id="products-container" class="product-grid">
+  <!-- Products will be inserted here via JS -->
+</section>
+
+<!-- ✅ Footer -->
+<footer>
+  <div class="footer-container">
+    <div class="footer-section">
+      <h3>Seyam Store</h3>
+      <p>Premium sportswear for every athlete.</p>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+      </div>
+    </div>
+    <div class="footer-section">
+      <h3>Shop</h3>
+      <ul class="footer-links">
+        <li><a href="men.html">Men's Collection</a></li>
+        <li><a href="women.html">Women's Collection</a></li>
+        <li><a href="new-arrivals.html">New Arrivals</a></li>
+        <li><a href="sale.html">Sale Items</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h3>Customer Service</h3>
+      <ul class="footer-links">
+        <li><a href="contact.html">Contact Us</a></li>
+        <li><a href="size-guide.html">Size Guide</a></li>
+        <li><a href="shipping.html">Shipping Info</a></li>
+        <li><a href="returns.html">Returns & Exchanges</a></li>
+      </ul>
+    </div>
+    <div class="footer-section">
+      <h3>About Us</h3>
+      <ul class="footer-links">
+        <li><a href="about.html">Our Story</a></li>
+        <li><a href="sustainability.html">Sustainability</a></li>
+        <li><a href="athletes.html">Athletes</a></li>
+        <li><a href="blog.html">Blog</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 Seyam Store. All rights reserved.</p>
+  </div>
+</footer>
+<a href="#" id="scrollTopBtn" title="Go to top">
+  <i class="fas fa-arrow-up"></i>
+</a>
+<script src="js/main.js"></script>
+</body>
+</html>

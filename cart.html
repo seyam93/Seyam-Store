@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cart | Seyam Store</title>
+  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">
+    <img src="media/logo2-removebg-preview.png" alt="Seyam Store Logo" />
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="products.html">Products</a></li>
+    <li><a href="cart.html" class="cart-link">
+      <i class="fas fa-shopping-cart"></i>
+      <span class="cart-count" id="cart-count">0</span>
+    </a></li>
+  </ul>
+</nav>
+
+<section class="cart-page">
+  <div class="container">
+    <h2>Your Cart</h2>
+    <div id="cart-items"></div>
+    <div class="cart-summary">
+      <p>Total: <strong id="cart-total">$0.00</strong></p>
+      <p>Shipping: <strong>FREE</strong></p>
+      <p>Tax: <strong>$0.00</strong></p>
+      <div class="cart-buttons">
+        <a href="products.html" class="btn">← Continue Shopping</a>
+        <!-- <a href="#" class="btn checkout">Checkout</a> -->
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ✅ Checkout Form -->
+<section class="checkout-form">
+  <h3><i class="fas fa-credit-card"></i> Checkout Information</h3>
+  <form id="checkoutForm">
+    <div class="form-grid">
+      <div class="form-group">
+        <label for="name"><i class="fas fa-user"></i> Full Name</label>
+        <input type="text" id="name" name="name" placeholder="Ahmed Seyam" required />
+      </div>
+
+      <div class="form-group">
+        <label for="email"><i class="fas fa-envelope"></i> Email</label>
+        <input type="email" id="email" name="email" placeholder="Seyam@Seyam.com" required />
+      </div>
+
+      <div class="form-group">
+        <label for="phone"><i class="fas fa-phone"></i> Phone</label>
+        <input type="tel" id="phone" name="phone" placeholder="+1 234 567 890" required />
+      </div>
+      <div class="form-group">
+        <label for="payment"><i class="fas fa-wallet"></i> Payment Method</label>
+        <select id="payment" name="payment" required>
+          <option value="">Select a method</option>
+          <option value="cod">Cash on Delivery</option>
+          <option value="card">Credit/Debit Card</option>
+        </select>
+      </div>
+      <div class="form-group full-width">
+        <label for="address"><i class="fas fa-map-marker-alt"></i> Shipping Address</label>
+        <textarea id="address" name="address" rows="3" placeholder="Heliopolis - Cairo" required></textarea>
+      </div>
+    </div>
+    <button type="submit" class="btn checkout full-width"><i class="fas fa-check-circle"></i> Place Order</button>
+  </form>
+</section>
+
+<footer>
+  <div class="footer-container">
+    <div class="footer-section">
+      <h3>Seyam Store</h3>
+      <p>Premium sportswear for every athlete.</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 Seyam Store. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="js/utils.js"></script>
+<script>
+  function showToast(message) {
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const cartItemsEl = document.getElementById('cart-items');
+    const cartTotalEl = document.getElementById('cart-total');
+
+    function renderCart() {
+      const cart = getCartItems();
+      cartItemsEl.innerHTML = '';
+
+      if (cart.length === 0) {
+        cartItemsEl.innerHTML = '<p>Your cart is empty.</p>';
+        cartTotalEl.textContent = '$0.00';
+        return;
+      }
+
+      let total = 0;
+
+      cart.forEach(item => {
+        const itemTotal = Number(item.price) * item.quantity;
+        total += itemTotal;
+
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+            <img src="${item.image}" alt="${item.title}" />
+            <div class="details">
+              <h4>${item.title}</h4>
+              <p>$${Number(item.price).toFixed(2)}</p>
+              <div class="quantity-control">
+                <button class="qty-decrease" data-id="${item.id}">-</button>
+                <span>${item.quantity}</span>
+                <button class="qty-increase" data-id="${item.id}">+</button>
+              </div>
+              <p><strong>$${itemTotal.toFixed(2)}</strong></p>
+              <button class="remove-btn" data-id="${item.id}">Remove</button>
+            </div>
+          `;
+        cartItemsEl.appendChild(div);
+      });
+
+      cartTotalEl.textContent = `$${total.toFixed(2)}`;
+
+      document.querySelectorAll('.remove-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          if (confirm("Remove this item from cart?")) {
+            removeItemFromCart(parseInt(btn.getAttribute('data-id')));
+          }
+        });
+      });
+
+      document.querySelectorAll('.qty-increase').forEach(btn => {
+        btn.addEventListener('click', () => {
+          updateItemQuantity(parseInt(btn.getAttribute('data-id')), 1);
+        });
+      });
+
+      document.querySelectorAll('.qty-decrease').forEach(btn => {
+        btn.addEventListener('click', () => {
+          updateItemQuantity(parseInt(btn.getAttribute('data-id')), -1);
+        });
+      });
+    }
+
+    function removeItemFromCart(id) {
+      const cart = getCartItems().filter(item => item.id !== id);
+      saveCartItems(cart);
+      updateCartCount();
+      renderCart();
+    }
+
+    function updateItemQuantity(id, change) {
+      const cart = getCartItems();
+      const item = cart.find(p => p.id === id);
+      if (item) {
+        if (item.quantity <= 1 && change === -1) return;
+        item.quantity += change;
+        saveCartItems(cart);
+        updateCartCount();
+        renderCart();
+        showToast("Cart updated!");
+      }
+    }
+
+    renderCart();
+  });
+</script>
+<a href="#" id="scrollTopBtn" title="Go to top">
+  <i class="fas fa-arrow-up"></i>
+</a>
+</body>
+</html>

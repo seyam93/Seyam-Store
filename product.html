@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <a href="products.html" class="back-button">← Back to Products</a>
+  <span class="product-category" id="product-category"></span>
+  <title>Product | Seyam Store</title>
+  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="styles/product.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="js/utils.js"></script>
+</head>
+<body>
+
+<!-- ✅ Navbar -->
+<nav class="navbar">
+  <a href="index.html" class="nav-brand">
+    <img src="media/logo2-removebg-preview.png" alt="Seyam Store Logo">
+  </a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="products.html">Products</a></li>
+    <li>
+      <a href="cart.html" class="cart-link">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count" id="cart-count">0</span>
+      </a>
+    </li>
+  </ul>
+</nav>
+
+<!-- ✅ Breadcrumb -->
+<div class="breadcrumb">
+  <a href="index.html">Home</a> / <a href="products.html">Products</a> / <span id="breadcrumb-title">Loading...</span>
+</div>
+
+<!-- ✅ Product Detail -->
+<section class="product-detail">
+  <div class="container">
+    <div class="product-image">
+      <img id="product-image" src="" alt="Product Image" />
+    </div>
+
+    <div class="product-info">
+      <h2 id="product-title"></h2>
+      <div id="product-rating" class="rating"></div>
+      <p id="product-description"></p>
+      <p class="price" id="product-price"></p>
+
+      <div class="product-actions">
+        <label for="quantity">Qty:</label>
+        <input type="number" id="quantity" value="1" min="1" />
+        <button id="add-to-cart"><i class="fas fa-shopping-cart"></i> Add to Cart</button>
+      </div>
+
+      <div id="cart-confirm" class="confirm-message" style="display: none;">
+        ✅ Added to cart!
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="product-reviews">
+  <div class="container">
+    <h3>Customer Reviews</h3>
+    <div class="review">
+      <strong>Ali</strong> ⭐⭐⭐⭐☆<br />
+      <p>Great quality! Fast shipping and nice packaging.</p>
+    </div>
+    <div class="review">
+      <strong>Lina</strong> ⭐⭐⭐⭐⭐<br />
+      <p>Loved the product. Will buy again!</p>
+    </div>
+  </div>
+</section>
+<!-- ✅ Footer -->
+<footer>
+  <div class="footer-container">
+    <div class="footer-section">
+      <h3>Seyam Store</h3>
+      <p>Premium sportswear for every athlete.</p>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+      </div>
+    </div>
+    <div class="footer-section">
+      <h3>Customer Service</h3>
+      <ul class="footer-links">
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Shipping</a></li>
+        <li><a href="#">Returns</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2025 Seyam Store. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- ✅ Product Detail Script -->
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const productId = params.get('id');
+
+  const imageEl = document.getElementById('product-image');
+  const titleEl = document.getElementById('product-title');
+  const descEl = document.getElementById('product-description');
+  const priceEl = document.getElementById('product-price');
+  const addToCartBtn = document.getElementById('add-to-cart');
+  const quantityInput = document.getElementById('quantity');
+  const confirmMessage = document.getElementById('cart-confirm');
+  const ratingEl = document.getElementById('product-rating');
+  const breadcrumbTitle = document.getElementById('breadcrumb-title');
+
+  let currentProduct;
+
+  if (productId) {
+    fetch(`https://fakestoreapi.com/products/${productId}`)
+            .then(res => res.json())
+            .then(product => {
+              currentProduct = product;
+              imageEl.src = product.image;
+              titleEl.textContent = product.title;
+              descEl.textContent = product.description;
+              priceEl.textContent = `$${product.price}`;
+              ratingEl.innerHTML = renderStars(product.rating?.rate || 0, product.rating?.count || 0);
+              breadcrumbTitle.textContent = product.title;
+            })
+            .catch(err => {
+              document.querySelector('.product-info').innerHTML = '<p>Failed to load product.</p>';
+              console.error(err);
+            });
+  }
+
+  addToCartBtn.addEventListener('click', () => {
+    if (!currentProduct) return;
+
+    const quantity = parseInt(quantityInput.value) || 1;
+
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const existing = cart.find(item => item.id === currentProduct.id);
+
+    if (existing) {
+      existing.quantity += quantity;
+    } else {
+      cart.push({ ...currentProduct, quantity });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    confirmMessage.style.display = 'block';
+    setTimeout(() => confirmMessage.style.display = 'none', 3000);
+  });
+
+  function renderStars(rate, count) {
+    const fullStars = Math.floor(rate);
+    const half = rate % 1 >= 0.5;
+    const emptyStars = 5 - fullStars - (half ? 1 : 0);
+    return (
+            '★'.repeat(fullStars) +
+            (half ? '½' : '') +
+            '☆'.repeat(emptyStars) +
+            ` <span style="font-size: 0.9rem; color: var(--gray)">(${count} reviews)</span>`
+    );
+  }
+</script>
+<div class="sticky-cart" id="sticky-cart">
+  <span id="sticky-price">$0.00</span>
+  <button id="sticky-add">Add to Cart</button>
+</div>
+<a href="#" id="scrollTopBtn" title="Go to top">
+  <i class="fas fa-arrow-up"></i>
+</a>
+</body>
+</html>
